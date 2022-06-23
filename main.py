@@ -17,13 +17,17 @@ ckeditor = CKEditor(app)
 Bootstrap(app)
 
 ##CONNECT TO DB
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("postgres://yudaglcrbddxbw:0524cd1a5270ee905320bde85dab225e6ec3a37931294c9bfff1700bbaad716e@ec2-44-197-128-108.compute-1.amazonaws.com:5432/d8u4cpjvnntnql", "sqlite:///blog.db")
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
+    "postgres://yudaglcrbddxbw:0524cd1a5270ee905320bde85dab225e6ec3a37931294c9bfff1700bbaad716e@ec2-44-197-128-108.compute-1.amazonaws.com:5432/d8u4cpjvnntnql",
+    "sqlite:///blog.db")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 
-gravatar = Gravatar(app, size=100, rating='g', default='retro', force_default=False, force_lower=False, use_ssl=False, base_url=None)
+gravatar = Gravatar(app, size=100, rating='g', default='retro', force_default=False, force_lower=False, use_ssl=False,
+                    base_url=None)
+
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -170,7 +174,8 @@ def show_post(post_id):
         )
         db.session.add(new_comment)
         db.session.commit()
-    return render_template("post.html", post=requested_post, current_user=current_user, form=form, comment_id=comment_id)
+    return render_template("post.html", post=requested_post, current_user=current_user, form=form,
+                           comment_id=comment_id)
 
 
 @app.route("/about")
@@ -233,6 +238,7 @@ def delete_post(post_id):
     db.session.commit()
     return redirect(url_for('get_all_posts'))
 
+
 @app.route("/delete-comment/<int:comment_id>")
 @admin_only
 def delete_comment(comment_id):
@@ -240,6 +246,7 @@ def delete_comment(comment_id):
     db.session.delete(comment_to_delete)
     db.session.commit()
     return redirect(url_for('get_all_posts'))
+
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000, debug=True)
